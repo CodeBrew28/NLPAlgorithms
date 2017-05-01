@@ -126,7 +126,6 @@ for song in song_list:
         similarity_rating = w1.similarity(w2)
         colors["purple"] = similarity_rating / songs[song][word]
 
-
     colors['red'] /= word_count
     colors['orange'] /= word_count
     colors['yellow'] /= word_count
@@ -135,19 +134,15 @@ for song in song_list:
     colors['indigo'] /= word_count
     colors['purple'] /= word_count
 
-
     palette['colors'] = colors
 
+my_colors = [  palette['colors']['red']  , palette['colors']['orange'] , palette['colors']['yellow'], palette['colors']['green'] , palette['colors']['blue'], palette['colors']['indigo'],  palette['colors']['purple'] ] 
 
-
-my_colors = [  int(palette['colors']['red'] * 10000 ) , int( palette['colors']['orange'] * 10000) , int( palette['colors']['yellow'] * 10000), int(palette['colors']['green'] * 10000) , int( 10000 * palette['colors']['blue']) , int( 10000 * palette['colors']['indigo'] ), int( 10000 * palette['colors']['purple']) ] 
-
-
-print(my_colors)
 color_string = ""
+my_max = max(my_colors)
 for color in my_colors:
-    color_string += str(color) + ","
-color_string = color_string[:len(color_string) -2] 
+    color = int(  (color / my_max) * 9 )
+    color_string += str(color) 
 
 print(color_string)
 
