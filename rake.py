@@ -75,10 +75,12 @@ def query(query):
     print("Song not found")
 
 
-query("Partition")
+import sys
+
+query(sys.argv[1])
+print(sys.argv[1])
 
 song_list = (songs.keys())
-print(song_list)
 
 nlp = spacy.load('en')
 
@@ -95,25 +97,62 @@ for song in song_list:
     for word in songs[song]:
         word_count += 1
         w2 = nlp(word)
+
         w1 = nlp(unicode("red"))
         similarity_rating = w1.similarity(w2)
         colors["red"] = similarity_rating / songs[song][word]
+
+        w1 = nlp(unicode("orange"))
+        similarity_rating = w1.similarity(w2)
+        colors["orange"] = similarity_rating / songs[song][word]
+
+        w1 = nlp(unicode("yellow"))
+        similarity_rating = w1.similarity(w2)
+        colors["yellow"] = similarity_rating / songs[song][word]
+
         w1 = nlp(unicode("green"))
         similarity_rating = w1.similarity(w2)
-        colors["green"] = similarity_rating / songs[song][word]
+        colors["red"] = similarity_rating / songs[song][word]
+        
         w1 = nlp(unicode("blue"))
         similarity_rating = w1.similarity(w2)
         colors["blue"] = similarity_rating / songs[song][word]
 
+        w1 = nlp(unicode("indigo"))
+        similarity_rating = w1.similarity(w2)
+        colors["indigo"] = similarity_rating / songs[song][word]
+
+        w1 = nlp(unicode("purple"))
+        similarity_rating = w1.similarity(w2)
+        colors["purple"] = similarity_rating / songs[song][word]
+
 
     colors['red'] /= word_count
+    colors['orange'] /= word_count
+    colors['yellow'] /= word_count
     colors['green'] /= word_count
     colors['blue'] /= word_count
+    colors['indigo'] /= word_count
+    colors['purple'] /= word_count
 
 
     palette['colors'] = colors
-    palette['start'] = 0
-    palette['end'] = 100
 
 
-print(palette)
+
+my_colors = [  int(palette['colors']['red'] * 10000 ) , int( palette['colors']['orange'] * 10000) , int( palette['colors']['yellow'] * 10000), int(palette['colors']['green'] * 10000) , int( 10000 * palette['colors']['blue']) , int( 10000 * palette['colors']['indigo'] ), int( 10000 * palette['colors']['purple']) ] 
+
+
+print(my_colors)
+color_string = ""
+for color in my_colors:
+    color_string += str(color) + ","
+color_string = color_string[:len(color_string) -2] 
+
+print(color_string)
+
+import serial
+ser = serial.Serial('/dev/ttyUSB0') # open first serial port
+print(ser.name)      # check which port was really used
+ser.write(str(color_string) )     # write a string
+ser.close()             # close port
